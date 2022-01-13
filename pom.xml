@@ -1,0 +1,128 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.xynovation.de</groupId>
+  <artifactId>demo</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>demo</name>
+  <url>http://maven.apache.org</url>
+
+  <!-- mvn release:prepare -DdryRun -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
+    -->
+    <!-- use for compiler >= 1.9, says source and target and compiler is java 16.x -->
+    <maven.compiler.release>16</maven.compiler.release>
+
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <!-- <java.version>16</java.version> -->
+    <!-- spring boot parameter -->
+
+    <junit-jupiter.version>5.7.2</junit-jupiter.version>
+    <assertj.version>3.21.0</assertj.version>
+    <mockito.version>4.0.0</mockito.version>
+
+    <surefire.version>3.0.0-M5</surefire.version>
+    <failsafe.version>3.0.0-M5</failsafe.version>
+  </properties>
+
+  <!-- testing resources -->
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <!--      https://stackoverflow.com/questions/36970384/surefire-is-not-picking-up-junit-5-tests -->
+  <!-- this plugin let Maven execute tests from the command line otherwise it wasn't running any of them -->
+  <build>
+    <!--   <testSourceDirectory>${project.basedir}/src/test/java/unit</testSourceDirectory> -->
+
+    <!-- run just integration test & all phases not unit - mvn -Dtest=nounit -DfailIfNoTests=false verify -->
+    <!-- run unit test: mvn test -->
+    <!-- mvn verify / mvn integration-test - runs unit and integration tests
+     mvn failsafe:integration-test - runs just the integration tests
+ run integration test: mvn verify, mvn clean test-compile failsafe:integration-test -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+
+      <!-- Runs junit test - files in same place an unit test file_nameTest.java -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+      </plugin>
+
+      <!-- Runs integration test - files in same place an unit test file_nameIT.java -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${failsafe.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
+    Put integration tests in separate directory
+
+    https://khmarbaise.github.io/maui/it-example-1.html
+  -->
+      <!--
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-failsafe-plugin</artifactId>
+      <version>3.0.0-M5</version>
+      <executions>
+          <execution>
+              <id>spock-integration-tests</id>
+              <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+              </goals>
+              <configuration>
+                  <failIfNoTests>true</failIfNoTests>
+                  <testSourceDirectory>${project.basedir}/src/test/java/integration</testSourceDirectory>
+                  <includes>
+                      <include>**/*IT.java</include>
+                  </includes>
+              </configuration>
+          </execution>
+      </executions>
+  </plugin>
+-->
+
+    </plugins>
+
+  </build>
+
+
+</project>
