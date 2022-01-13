@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
-
+// Integration Test
 public class AppIT {
     @Test
     public void appShouldReturnBook() {
